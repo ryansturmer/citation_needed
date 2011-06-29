@@ -1,0 +1,8 @@
+<!ENTITY citationneeded.label "Your localized menuitem">
+<!ENTITY citationneededContext.label "Your Menuitem">
+<!ENTITY citationneededContext.accesskey "Y">
+<!ENTITY citationneededToolbarButton.label "Your Toolbar Button">
+<!ENTITY citationneededToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY citationneededSidebar.label "Your Sidebar">
+<!ENTITY citationneededToolbar.name  "example">
+<!ENTITY citationneededToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &citationneededToolbar.name;">

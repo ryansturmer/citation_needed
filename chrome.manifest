@@ -1,0 +1,7 @@
+content   citationneeded                 chrome/content/
+skin      citationneeded   classic/1.0   chrome/skin/
+locale    citationneeded   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://citationneeded/content/ff-overlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://citationneeded/skin/overlay.css

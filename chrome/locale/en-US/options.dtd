@@ -1,0 +1,8 @@
+<!ENTITY prefwindow.title "Citation Needed preferences">
+<!ENTITY pane1.title "Citation Needed preferences">
+<!ENTITY checkboolpref.label "A Boolean Preference">
+<!ENTITY checkboolpref.accesskey "B">
+<!ENTITY intpref.label "An Integer Preference">
+<!ENTITY intpref.accesskey "I">
+<!ENTITY stringpref.label "A String Preference">
+<!ENTITY stringpref.accesskey "S">
