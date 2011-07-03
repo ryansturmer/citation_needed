@@ -1,3 +1,3 @@
 #!/bin/sh
 
-firefox -no-remote -P dev
+firefox -no-remote -purgecaches -P developer
