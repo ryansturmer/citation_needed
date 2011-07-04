@@ -9,11 +9,11 @@ clear_entries = function() {
 }
 
 parse_url = function(url) {
-	var pattern = /^(http|https):\/\/\w+\.wikipedia\.org\/?wiki\/([\w\:\%\(\)\-\.\!]+)(\#(\w+))?\/?/i;
+	var pattern = /^(http|https):\/\/\w+\.wikipedia\.org\/?wiki\/([\w\:\%\(\)\-\.\!\,]+)(\#(\w+))?\/?/i;
 	if(pattern.test(url)) {
 		match = pattern.exec(url);
 		debug("THIS IS A WIKI URL:  " + url);
-		var topic = match[2].replace("_"," ");
+		var topic = match[2].replace(/\_/g," ");
 		var subtopic = "";
 		try {
 			match[3].replace("_"," ");
@@ -45,6 +45,10 @@ add_entry = function(src_url, target_url) {
 }
 
 write_entries = function(path) {
+	if (entries.length == 0) {
+		alert("There is no wikipedia browsing history to record.");
+		return;
+	}
 	debug("Writing the entries file");
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -52,15 +56,25 @@ write_entries = function(path) {
 	fp.appendFilter("CSV Files", "*.csv");
 	fp.defaultString = "output.csv";
 	var res = fp.show();
-	if (res == nsIFilePicker.returnOK) {
-		var path = fp.path;
+	if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace) {
+		var path = fp.file.path;
+		debug(path);
 		var lines = new Array()
 		for (var i=0; i<entries.length; i++) {
 			debug(entries[i]);
+			for(var j=0; j<entries[i].length; j++) {
+				entries[i][j] = "\"" + entries[i][j] + "\"";
+			}
 			lines.push(entries[i].join(","));
 		}
-		fh = FileIO.open(path);
+		var fh = FileIO.open(path);
+		if(res == nsIFilePicker.returnReplace) {
+			FileIO.unlink(fh);
+			fh = FileIO.open(path);
+		}
 		FileIO.write(fh, lines.join("\n"));
+	} else {
+		debug("Didn't get the OK from the file picker");
 	}
 }
 on_page_load = function(event) {
@@ -98,7 +112,13 @@ on_tab_select = function(event) {
 	debug("on_tab_select()\n");
 	var doc = gBrowser.contentDocument;
 	debug(doc.defaultView.location.href);
-	debug("\n");
+	if(cn_recording) {
+		add_entry(null, doc.defaultView.location.href);
+	} else {
+		debug("Not recording, so ignoring: " + target)
+	}
+
+
 }
 onload_function = function() {
 	//onFirefoxLoad();

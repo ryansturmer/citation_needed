@@ -14,9 +14,9 @@
 			type="menu-button"
 			oncommand="toggle_recording(event);">
 			<menupopup>
-				<menuitem label="Start Recording" oncommand="toggle_recording(event);" id="menuitem_startstop"/>
+				<menuitem label="Start Recording" class="menuitem-iconic" oncommand="toggle_recording(event);" id="menuitem_startstop" image="" />
 				<menuseparator/>
-				<menuitem label="Save recorded data..." oncommand='write_entries("/home/ryansturmer/output.txt");'/>
+				<menuitem label="Save recorded data..." class="menuitem-iconic" oncommand='write_entries("/home/ryansturmer/output.txt");' image='url("chrome://citationneeded/content/save_as.png")' />
 			</menupopup>
 		</toolbarbutton>
 	</toolbarpalette>
