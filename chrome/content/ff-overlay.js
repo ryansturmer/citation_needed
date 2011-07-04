@@ -62,10 +62,10 @@ write_entries = function(path) {
 		var lines = new Array()
 		for (var i=0; i<entries.length; i++) {
 			debug(entries[i]);
+			lines.push(new Array())
 			for(var j=0; j<entries[i].length; j++) {
-				entries[i][j] = "\"" + entries[i][j] + "\"";
+				lines[i].push("\"" + entries[i][j] + "\"");
 			}
-			lines.push(entries[i].join(","));
 		}
 		var fh = FileIO.open(path);
 		if(res == nsIFilePicker.returnReplace) {
