@@ -9,7 +9,7 @@ clear_entries = function() {
 }
 
 parse_url = function(url) {
-	var pattern = /^(http|https):\/\/\w+\.wikipedia\.org\/?wiki\/([\w\:\%\(\)\-\.\!\,]+)(\#(\w+))?\/?/i;
+	var pattern = /^(http|https):\/\/\w+\.wikipedia\.org\/?wiki\/([\w\:\%\(\)\-\.\!\,\'\`\+]+)(\#(\w+))?\/?/i;
 	if(pattern.test(url)) {
 		match = pattern.exec(url);
 		debug("THIS IS A WIKI URL:  " + url);
@@ -41,6 +41,8 @@ add_entry = function(src_url, target_url) {
 		}
 		debug("Adding an entry: " + new_entry);
 		entries.push(new_entry);
+		document.getElementById("mnu_status").setAttribute("label", "Recording: " + entries.length + " entries.");
+
 	}
 }
 
@@ -59,12 +61,13 @@ write_entries = function(path) {
 	if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace) {
 		var path = fp.file.path;
 		debug(path);
-		var lines = new Array()
+		var lines = new Array();
+		lines.push(new Array("\"timestamp\"","\"source topic\"","\"source subtopic\"", "\"dest topic\"", "\"dest subtopic\""))
 		for (var i=0; i<entries.length; i++) {
 			debug(entries[i]);
 			lines.push(new Array())
 			for(var j=0; j<entries[i].length; j++) {
-				lines[i].push("\"" + entries[i][j] + "\"");
+				lines[i+1].push("\"" + entries[i][j] + "\"");
 			}
 		}
 		var fh = FileIO.open(path);
@@ -98,13 +101,15 @@ toggle_recording = function(event) {
 		cn_recording = false;
 		debug("Stopping recording now");
 		document.getElementById("menuitem_startstop").setAttribute("label", "Start Recording");
-		document.getElementById("cn_button").style.listStyleImage = "url(chrome://citationneeded/content/blank_piece.png)";
+		document.getElementById("cn_button").style.listStyleImage = "url(chrome://citationneeded/content/blank_piece_w.png)";
+		document.getElementById("mnu_status").setAttribute("label", "Not recording.");
 	}
 	else {
 		cn_recording = true;
 		debug("Starting recording now");
 		document.getElementById("menuitem_startstop").setAttribute("label", "Stop Recording");
-		document.getElementById("cn_button").style.listStyleImage = "url(chrome://citationneeded/content/blank_piece_green.png)";
+		document.getElementById("cn_button").style.listStyleImage = "url(chrome://citationneeded/content/blank_piece_green_w.png)";
+		document.getElementById("mnu_status").setAttribute("label", "Recording: " + entries.length + " entries.");
 	}
 }
 

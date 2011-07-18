@@ -1,4 +1,4 @@
-#cn_button, #wrapper-cn_button {list-style-image: url("chrome://citationneeded/content/blank_piece.png");}
+#cn_button, #wrapper-cn_button {list-style-image: url("chrome://citationneeded/content/blank_piece_w.png");}
 
 /* common style for all custom buttons */
 .custombutton                  
@@ -12,4 +12,6 @@
 
 [iconsize="small"] .custombutton:hover
   {-moz-image-region: rect(24px 40px 40px 24px);}
+
+#mnu_save {list-style-image: url("chrome://citationneeded/content/save_as.png");}
 

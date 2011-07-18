@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://citationneeded/skin/overlay.css" type="text/css"?>
-<?xml-stylesheet type="text/css" href="chrome://citationneeded/content/ff-overlay.css"?>
+<?xml-stylesheet type="text/css" href="chrome://citationneeded/skin/overlay.css"?>
 <!DOCTYPE overlay SYSTEM "chrome://citationneeded/locale/overlay.dtd">
 <overlay id="citationneeded-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -15,8 +15,9 @@
 			oncommand="toggle_recording(event);">
 			<menupopup>
 				<menuitem label="Start Recording" class="menuitem-iconic" oncommand="toggle_recording(event);" id="menuitem_startstop" image="" />
+				<menuitem id="mnu_save" label="Save recorded data..." class="menuitem-iconic" oncommand='write_entries("/home/ryansturmer/output.txt");'/>
 				<menuseparator/>
-				<menuitem label="Save recorded data..." class="menuitem-iconic" oncommand='write_entries("/home/ryansturmer/output.txt");' image='url("chrome://citationneeded/content/save_as.png")' />
+				<menuitem id="mnu_status" label="Not recording." disabled="true" />
 			</menupopup>
 		</toolbarbutton>
 	</toolbarpalette>

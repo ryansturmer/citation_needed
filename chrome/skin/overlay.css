@@ -1,22 +1,17 @@
-/* This is just an example.  You shouldn't do this. */
-#citationneeded-hello
-{
-  color: red ! important;
-}
-#citationneeded-toolbar-button
-{
-  list-style-image: url("chrome://citationneeded/skin/toolbar-button.png");
-  -moz-image-region: rect(0px 24px 24px 0px);
-}
-#citationneeded-toolbar-button:hover
-{
-  -moz-image-region: rect(24px 24px 48px  0px);
-}
-[iconsize="small"] #citationneeded-toolbar-button
-{
-  -moz-image-region: rect( 0px 40px 16px 24px);
-}
-[iconsize="small"] #citationneeded-toolbar-button:hover
-{
-  -moz-image-region: rect(24px 40px 40px 24px);
-}
+#cn_button, #wrapper-cn_button {list-style-image: url("chrome://citationneeded/content/blank_piece_w.png");}
+
+/* common style for all custom buttons */
+.custombutton                  
+  {-moz-image-region: rect( 0px 24px 24px  0px);}
+
+/*.custombutton:hover     
+  {-moz-image-region: rect(24px 24px 48px  0px);}
+*/
+[iconsize="small"] .custombutton
+  {-moz-image-region: rect( 0px 40px 16px 24px);}
+
+[iconsize="small"] .custombutton:hover
+  {-moz-image-region: rect(24px 40px 40px 24px);}
+
+#mnu_save {list-style-image: url("chrome://citationneeded/content/save_as.png");}
+
