@@ -96,12 +96,81 @@ class WikiGraph(object):
 					graph.visit(t, p, timestamp)
 		return graph
 
+class MultiGraph(object):
+    def __init__(self):
+        self.graphs = []
+        self.colors = {}
+
+    def add(self, subgraph, color):
+        self.colors[subgraph] = color
+        self.graphs.append(subgraph)
+
+    def set_blend_color(self, color, *subgraphs):
+        key = tuple(sorted(subgraphs))
+        self.colors[key] = color
+    
+    def __get_key(self, node):
+        return tuple(sorted([g for g in self.graphs if node in g.nodes]))
+    
+    def __get_edge_color(self, a, b, graph):
+        key_a = self.__get_key(a)
+        key_b = self.__get_key(b)
+        if len(key_a) > len(key_b):
+            color = self.colors.get(key_a, self.colors[graph])
+        elif len(key_b) > len(key_a):
+            color = self.colors.get(key_b, self.colors[graph])
+        else:
+            color = self.colors[graph]
+        return color
+
+    def render(self):
+        retval = "digraph CitationNeeded {\n"
+        for graph in self.graphs:
+            for node in graph.nodes.keys():
+                #percentage = 255-int(128*(float(graph.nodes[node])/self.max_time))
+                #color = "#" + (("%02x" % percentage)*3)
+                key = tuple(sorted([g for g in self.graphs if node in g.nodes]))
+                color = self.colors.get(key, self.colors[graph])
+                if node == graph.root:
+                        retval += '  node [style=bold,fontcolor=%s,color=%s]; "%s";\n' % (color,color,node)
+                else:
+                        retval += '  node [style=solid,fontcolor=%s,color=%s]; "%s";\n' % (color, color, node)
+                #retval += "  node [style=filled,bgcolor=\"%s\"]; \"%s\"\n" % (color, node)
+
+            for a,b in graph.new_edges:
+                color = self.__get_edge_color(a,b,graph)
+                retval += '  "%s" -> "%s" [style="bold",label="%s", color=%s, fontcolor=%s];\n' % (a,b,graph.edge_labels[(a,b)],color,self.colors[graph])
+
+            for a,b in graph.referred_edges:
+                color = self.__get_edge_color(a,b,graph)
+                retval += '  "%s" -> "%s" [style="solid",label="%s",color=%s, fontcolor=%s];\n' % (a,b,graph.edge_labels[(a,b)],color,self.colors[graph])
+        
+            for a,b in graph.non_referred_edges:
+                color = self.__get_edge_color(a,b,graph)
+                retval += '  "%s" -> "%s" [style="dotted",label="%s",color=%s, fontcolor=%s];\n' % (a,b,graph.edge_labels[(a,b)],color,self.colors[graph])
+
+        retval += '}'
+        return retval
+
+
 if __name__ == "__main__":
-	if len(sys.argv) > 1:
-		filename = sys.argv[1]
-		graph = WikiGraph.load(filename)
-		print graph.render()
-		sys.exit(0)
+	if len(sys.argv) > 2:
+                filename1 = sys.argv[1]
+                filename2 = sys.argv[2]
+		graph1 = WikiGraph.load(filename1)
+		graph2 = WikiGraph.load(filename2)
+		multigraph = MultiGraph()
+                multigraph.add(graph1, "red")
+                multigraph.add(graph2, "blue")
+                multigraph.set_blend_color("purple", graph1, graph2)
+	        print multigraph.render()
+                sys.exit(0)
+        elif len(sys.argv) > 1:
+            filename = sys.argv[1]
+            graph = WikiGraph.load(filename)
+            print graph.render()
+            sys.exit(0)
+
 	graph = WikiGraph.load("../data/output.csv")
 
 
