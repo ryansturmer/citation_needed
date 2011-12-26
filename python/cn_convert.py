@@ -113,6 +113,7 @@ class MultiGraph(object):
         return tuple(sorted([g for g in self.graphs if node in g.nodes]))
     
     def __get_edge_color(self, a, b, graph):
+        return self.colors[graph]
         key_a = self.__get_key(a)
         key_b = self.__get_key(b)
         if len(key_a) > len(key_b):
@@ -131,6 +132,7 @@ class MultiGraph(object):
                 #color = "#" + (("%02x" % percentage)*3)
                 key = tuple(sorted([g for g in self.graphs if node in g.nodes]))
                 color = self.colors.get(key, self.colors[graph])
+                #color = self.colors[graph]
                 if node == graph.root:
                         retval += '  node [style=bold,fontcolor=%s,color=%s]; "%s";\n' % (color,color,node)
                 else:
