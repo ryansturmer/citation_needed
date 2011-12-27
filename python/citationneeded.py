@@ -35,11 +35,11 @@ class WikiGraph(object):
                     edge = (self.current_node, topic)
                     self.non_referred_edges.add(edge)
         if edge:
-                    if edge not in self.edge_labels:
-                        self.edge_labels[edge] = str(self.idx)
-                    else:
-                        self.edge_labels[edge] += ",%s" % self.idx
-                    self.idx += 1
+            if edge not in self.edge_labels:
+                self.edge_labels[edge] = str(self.idx)
+            else:
+                self.edge_labels[edge] += ",%s" % self.idx
+            self.idx += 1
 
         if not self.current_node:
             self.root = topic
@@ -99,6 +99,9 @@ class MultiGraph(object):
     def __init__(self):
         self.graphs = []
         self.colors = {}
+
+    def __iter__(self):
+        return iter(self.graphs)
 
     def add(self, subgraph, color):
         self.colors[subgraph] = color
