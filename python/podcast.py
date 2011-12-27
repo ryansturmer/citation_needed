@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # Argument parsing requires python 2.7
 import argparse, sys, StringIO, subprocess, os
 from citationneeded import create_multigraph_from_files, Blender 
