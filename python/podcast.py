@@ -17,13 +17,16 @@ args = parser.parse_args()
 COLORS = ['red','blue','forestgreen','dimgray']
 blender = Blender()
 blender.set_blend('red','blue','purple')
+blender.set_blend('red','blue','dimgray', 'orchid3')
 blender.set_blend('red','forestgreen', 'goldenrod4')
 blender.set_blend('red','dimgray', 'pink3')
 blender.set_blend('blue', 'forestgreen', 'cyan4')
 blender.set_blend('blue', 'dimgray', 'cornflowerblue')
 blender.set_blend('forestgreen', 'dimgray', 'darkolivegreen4')
 blender.set_blend('red','blue','forestgreen', 'salmon4')
+blender.set_blend('red','forestgreen', 'dimgray', 'goldenrod3')
 blender.set_blend('red','blue','forestgreen', 'dimgray', 'salmon3')
+blender.set_blend('blue','forestgreen', 'dimgray', 'cyan3')
 # Note: currently, blender has to include all possible blends, or the program won't work.  There is no "default" blend.
 
 def dot(input_data, file_format, output_filename):
@@ -44,7 +47,7 @@ if args.individual:
     for graph, filename in zip(list(multigraph), args.FILE):
         dot(graph.render(), args.format, basename(filename) + '.%s' % args.format)
 if args.combined:
-    dot(multigraph.render(), args.format, args.format)
+    dot(multigraph.render(), args.format, 'combined.%s' % args.format)
 
 sys.exit(0)
 
