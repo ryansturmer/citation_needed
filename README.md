@@ -15,7 +15,7 @@ The output of the build process is an .xpi file, which lives in the *extension* 
 
 Scripts
 -------
-The python directory contains some scripts that turn the output CSV files into useful graphs.  *podcast.py* is the front end script (used for generating graphs for my podcast) and *citationneeded.py* contains the internals.  Use podcast.py as an example for how to use the citationneeded module.
+The python directory contains some scripts that turn the output CSV files into useful graphs.  *podcast.py* is the front end script (used for generating graphs for my podcast) and *citationneeded.py* contains the internals.  Use *podcast.py* as an example for how to use the *citationneeded* module.
 
 Support
 -------
