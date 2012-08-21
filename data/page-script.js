@@ -12,3 +12,8 @@ self.port.on("load", function(msg) {
 
 });
 
+self.port.on("activate", function(msg) {
+    console.log("activate rec'vd")
+    var list = d3.select('#events').data([msg])
+    list.enter().append('li').text(function(msg)) {return msg})
+});
