@@ -42,6 +42,9 @@
         </style>
     </head>
     <body>
+        <h1>Citation Needed</h1>
+        <p>This is the user interface for the citation needed plugin</p>
+        <div id='chart'> </div>
         <script type="text/javascript">
     
             var charge = -220,
@@ -55,7 +58,7 @@
                 links = [],
                 index = {};
 
-            var vis = d3.select('body').append("svg:svg")
+            var vis = d3.select('#chart').append("svg:svg")
                 .attr("width", w)
                 .attr("height", h);
 
@@ -177,9 +180,6 @@
             restart();
         </script>
         
-        <h1>Citation Needed</h1>
-        <p>This is the user interface for the citation needed plugin</p>
-        <div id='chart'> </div>
     </body>
 </html>
 
