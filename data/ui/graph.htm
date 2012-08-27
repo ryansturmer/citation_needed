@@ -44,11 +44,11 @@
     <body>
         <script type="text/javascript">
     
-            var charge = -120,
-                linkDistance = 60;
+            var charge = -220,
+                linkDistance = 160;
 
             var w = 960,
-                h = 500,
+                h = 960,
                 fill = d3.scale.category20(),
                 last_node = [w/2,h/2],
                 nodes = [],
@@ -62,6 +62,9 @@
             vis.append("svg:rect")
                 .attr("width", w)
                 .attr("height", h);
+
+            node = vis.selectAll("g.nodegroup")
+            link = vis.selectAll("line.visit_link, line.focus_link")
 
             var force = d3.layout.force()
                 .linkDistance(linkDistance)
@@ -122,7 +125,7 @@
             }
 
             function restart() {
-              var link = vis.selectAll("line.visit_link,line.focus_link")
+              l = vis.selectAll("line.visit_link,line.focus_link")
                   .data(force.links())
                   .enter().append("svg:line", "circle.node")
                   .attr("class", function(d) {return d.cl})
@@ -130,31 +133,19 @@
                   .attr("y1", function(d) { return d.source.y; })
                   .attr("x2", function(d) { return d.target.x; })
                   .attr("y2", function(d) { return d.target.y; });
-            /*
-              circle = vis.selectAll("circle.node")
-                  .data(force.nodes())
-                  .enter().append("svg:circle")
-                  .attr("class", "node")
-                  .attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; })
-                  .attr("r", 5)
-                  .append('svg:title')
-                  .text(function(d) { return d.topic })
-                  .call(force.drag);
-             */
-              var node = vis.selectAll("g.nodegroup")
+              n = vis.selectAll("g.nodegroup")
                   .data(force.nodes())
                   .enter().append("svg:g")
                   .attr("class", "nodegroup")
                   .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
                   
-              node.append("svg:circle")
+              n.append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", 0)
                   .attr("cy", 0)
                   .attr("r", 5);
 
-              var text = node.append("svg:g")
+              var text = n.append("svg:g")
                   
               text.append("svg:text")
                   .attr("x", 8)
@@ -166,25 +157,19 @@
                   .attr("x", 8)
                   .attr("y", ".31em")
                   .text(function(d) { return d.topic });
-            
+
+              node = vis.selectAll("g.nodegroup");
+              link = vis.selectAll("line.visit_link, line.focus_link");
               force.start();
             }
 
             function tick() {
-                /*
-                vis.selectAll("circle.node")
-                    .attr("cx", function(d) { return d.x })
-                    .attr("cy", function(d) { return d.y });
-                */
-                vis.selectAll("g.nodegroup")
-                    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-                vis.selectAll("line.visit_link, line.focus_link")
-                    .attr("x1", function(d) { return d.source.x; })
+                link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-                //circle.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";});
             }
 
             document.documentElement.addEventListener('page-visit', function(event) {hit_topic(event.detail[0], event.detail[1], 'visit_link');}, false);
