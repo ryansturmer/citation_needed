@@ -42,7 +42,11 @@ def get_extensions(sdk):
         get_extension(url, sdk)
 
 if __name__ == "__main__":
-    shutil.rmtree(SDK_DIR)
+    try:    
+        shutil.rmtree(SDK_DIR)
+    except:
+        pass
+
     if os.path.exists(SDK_DIR):
         print "SDK dir exists already!"
         sys.exit(0)
@@ -52,6 +56,7 @@ if __name__ == "__main__":
     print 'Mozilla Add-on SDK Downloader'
     print '-----------------------------'
     print ''
+    
     # Create directories that will hold the SDK files
     os.mkdir(SDK_DIR)
     os.mkdir(TMP_DIR)
