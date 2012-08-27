@@ -55,7 +55,7 @@
                 links = [],
                 index = {};
 
-            var vis = d3.select("body").append("svg:svg")
+            var vis = d3.select('body').append("svg:svg")
                 .attr("width", w)
                 .attr("height", h);
 
@@ -71,9 +71,6 @@
                 .size([w, h])
                 .on("tick", tick);
 
-            var circle;
-            var text;
-            var link;
             /*
             vis.on("mousemove", function() {
               cursor.attr("transform", "translate(" + d3.svg.mouse(this) + ")");
@@ -98,8 +95,14 @@
              */
             
             function hit_topic(referrer, topic, type) {
+                var point = [w/2, h/2];
+                if(nodes.length >=1) {
+                    node = nodes[nodes.length-1];
+                    point = [node.x, node.y];
+                } 
+                
+
                 if(!(topic in index)) {
-                    var point = [w*0.75,h*0.75];
                     topic_node = {x: point[0], y: point[1], topic: topic};
                     index[topic] = topic_node;
                     n = nodes.push(topic_node);
@@ -108,7 +111,6 @@
                 }
 
                 if(!(referrer in index)) {
-                    var point = [w*0.75, h*0.75];
                     ref_node = {x: point[0], y: point[1], topic: referrer};
                     index[referrer] = ref_node;
                     n = nodes.push(ref_node);
@@ -120,7 +122,7 @@
             }
 
             function restart() {
-              link = vis.selectAll("line.visit_link,line.focus_link")
+              var link = vis.selectAll("line.visit_link,line.focus_link")
                   .data(force.links())
                   .enter().append("svg:line", "circle.node")
                   .attr("class", function(d) {return d.cl})
@@ -128,7 +130,7 @@
                   .attr("y1", function(d) { return d.source.y; })
                   .attr("x2", function(d) { return d.target.x; })
                   .attr("y2", function(d) { return d.target.y; });
-
+            /*
               circle = vis.selectAll("circle.node")
                   .data(force.nodes())
                   .enter().append("svg:circle")
@@ -139,11 +141,21 @@
                   .append('svg:title')
                   .text(function(d) { return d.topic })
                   .call(force.drag);
-           /* 
-              text = vis.selectAll("g.label")
-                  .data(nodes)
-                  .enter().append("svg:g");
+             */
+              var node = vis.selectAll("g.nodegroup")
+                  .data(force.nodes())
+                  .enter().append("svg:g")
+                  .attr("class", "nodegroup")
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
+                  
+              node.append("svg:circle")
+                  .attr("class", "node")
+                  .attr("cx", 0)
+                  .attr("cy", 0)
+                  .attr("r", 5);
 
+              var text = node.append("svg:g")
+                  
               text.append("svg:text")
                   .attr("x", 8)
                   .attr("y", ".31em")
@@ -154,20 +166,24 @@
                   .attr("x", 8)
                   .attr("y", ".31em")
                   .text(function(d) { return d.topic });
-            */
+            
               force.start();
             }
 
             function tick() {
+                /*
                 vis.selectAll("circle.node")
                     .attr("cx", function(d) { return d.x })
                     .attr("cy", function(d) { return d.y });
+                */
+                vis.selectAll("g.nodegroup")
+                    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-  vis.selectAll("line.visit_link, line.focus_link")
-      .attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
+                vis.selectAll("line.visit_link, line.focus_link")
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
                 //circle.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";});
             }
 
@@ -178,11 +194,7 @@
         
         <h1>Citation Needed</h1>
         <p>This is the user interface for the citation needed plugin</p>
-            
         <div id='chart'> </div>
-
-        <p>Here is a list of events:</p>
-        <ul id='events'></ul>
     </body>
 </html>
 
