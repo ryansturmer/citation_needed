@@ -1,15 +1,188 @@
 <html>
     <head>
         <title>Citation Needed</title>
-        <script src="http://d3js.org/d3.v2.js"></script>
+        <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.min.js"></script>
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.min.js"></script>
+        <style type="text/css">
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            rect {
+              fill: #fff;
+            }
+
+            .node {
+              fill: #000;
+            }
+
+            .visit_link {
+              stroke: #999;
+            }
+
+            .focus_link {
+              stroke: #aaa;
+              stroke-dasharray: 9, 5;  
+          }
+
+          text {
+            font: 10px sans-serif;
+            pointer-events: none;
+          }
+
+          text.shadow {
+            stroke: #fff;
+            stroke-width: 3px;
+            stroke-opacity: .8;
+          }
+        </style>
     </head>
     <body>
+        <script type="text/javascript">
+    
+            var charge = -120,
+                linkDistance = 60;
+
+            var w = 960,
+                h = 500,
+                fill = d3.scale.category20(),
+                last_node = [w/2,h/2],
+                nodes = [],
+                links = [],
+                index = {};
+
+            var vis = d3.select("body").append("svg:svg")
+                .attr("width", w)
+                .attr("height", h);
+
+            vis.append("svg:rect")
+                .attr("width", w)
+                .attr("height", h);
+
+            var force = d3.layout.force()
+                .linkDistance(linkDistance)
+                .charge(charge)
+                .nodes(nodes)
+                .links(links)
+                .size([w, h])
+                .on("tick", tick);
+
+            var circle;
+            var text;
+            var link;
+            /*
+            vis.on("mousemove", function() {
+              cursor.attr("transform", "translate(" + d3.svg.mouse(this) + ")");
+            });
+
+            vis.on("mousedown", function() {
+              var point = d3.svg.mouse(this),
+                  node = {x: point[0], y: point[1]},
+                  n = nodes.push(node);
+
+              // add links to any nearby nodes
+              nodes.forEach(function(target) {
+                var x = target.x - node.x,
+                    y = target.y - node.y;
+                if (Math.sqrt(x * x + y * y) < 30) {
+                  links.push({source: node, target: target});
+                }
+              });
+
+              restart();
+            });
+             */
+            
+            function hit_topic(referrer, topic, type) {
+                if(!(topic in index)) {
+                    var point = [w*0.75,h*0.75];
+                    topic_node = {x: point[0], y: point[1], topic: topic};
+                    index[topic] = topic_node;
+                    n = nodes.push(topic_node);
+                } else {
+                    topic_node = index[topic]
+                }
+
+                if(!(referrer in index)) {
+                    var point = [w*0.75, h*0.75];
+                    ref_node = {x: point[0], y: point[1], topic: referrer};
+                    index[referrer] = ref_node;
+                    n = nodes.push(ref_node);
+                } else {
+                    ref_node = index[referrer];
+                }
+                links.push({source: ref_node, target: topic_node, 'cl': type});
+                restart();
+            }
+
+            function restart() {
+              link = vis.selectAll("line.visit_link,line.focus_link")
+                  .data(force.links())
+                  .enter().append("svg:line", "circle.node")
+                  .attr("class", function(d) {return d.cl})
+                  .attr("x1", function(d) { return d.source.x; })
+                  .attr("y1", function(d) { return d.source.y; })
+                  .attr("x2", function(d) { return d.target.x; })
+                  .attr("y2", function(d) { return d.target.y; });
+
+              circle = vis.selectAll("circle.node")
+                  .data(force.nodes())
+                  .enter().append("svg:circle")
+                  .attr("class", "node")
+                  .attr("cx", function(d) { return d.x; })
+                  .attr("cy", function(d) { return d.y; })
+                  .attr("r", 5)
+                  .append('svg:title')
+                  .text(function(d) { return d.topic })
+                  .call(force.drag);
+           /* 
+              text = vis.selectAll("g.label")
+                  .data(nodes)
+                  .enter().append("svg:g");
+
+              text.append("svg:text")
+                  .attr("x", 8)
+                  .attr("y", ".31em")
+                  .attr("class", "shadow")
+                  .text(function(d) { return d.topic });
+
+              text.append("svg:text")
+                  .attr("x", 8)
+                  .attr("y", ".31em")
+                  .text(function(d) { return d.topic });
+            */
+              force.start();
+            }
+
+            function tick() {
+                vis.selectAll("circle.node")
+                    .attr("cx", function(d) { return d.x })
+                    .attr("cy", function(d) { return d.y });
+
+  vis.selectAll("line.visit_link, line.focus_link")
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+                //circle.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")";});
+            }
+
+            document.documentElement.addEventListener('page-visit', function(event) {hit_topic(event.detail[0], event.detail[1], 'visit_link');}, false);
+            document.documentElement.addEventListener('page-focus', function(event) {hit_topic(event.detail[0], event.detail[1], 'focus_link');}, false);
+            restart();
+        </script>
+        
         <h1>Citation Needed</h1>
         <p>This is the user interface for the citation needed plugin</p>
+            
+        <div id='chart'> </div>
+
         <p>Here is a list of events:</p>
-        <ul id='events'>
-            <li>example event</li>
-        </ul>
+        <ul id='events'></ul>
     </body>
 </html>
 
