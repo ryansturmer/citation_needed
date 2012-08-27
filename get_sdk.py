@@ -42,14 +42,11 @@ def get_extensions(sdk):
         get_extension(url, sdk)
 
 if __name__ == "__main__":
-    try:    
-        shutil.rmtree(SDK_DIR)
-    except:
-        pass
-
     if os.path.exists(SDK_DIR):
         print "SDK dir exists already!"
-        sys.exit(0)
+        if(raw_input('Delete and re-download SDK? (Y/n): ') in ('N','n')):
+            sys.exit(0)
+        shutil.rmtree(SDK_DIR)
 
     print ''
     print '-----------------------------'
