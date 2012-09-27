@@ -5,6 +5,6 @@
     "version": "0.1", 
     "fullName": "citation_needed", 
     "id": "jid1-n7zXsWPFciW2bg", 
-    "description": "a basic add-on",
-    "dependencies": ["menuitems", "addon-kit", "api-utils"]
+    "description": "Visualizes your wikipedia reading habits.",
+    "dependencies": ["vold-utils", "menuitems", "addon-kit", "api-utils"]
 }

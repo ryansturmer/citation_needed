@@ -14,7 +14,8 @@
             }
 
             rect {
-              fill: #fff;
+                fill: #fff;
+                stroke: #aaa;
             }
 
             .node {
@@ -43,16 +44,18 @@
         </style>
     </head>
     <body>
-        <h1>Citation Needed</h1>
-        <p>This is the user interface for the citation needed plugin</p>
-        <div id='chart'> </div>
+        <div style="text-align: center">
+            <h1>Citation Needed</h1>
+            <p>Observe the space below to visualize your wikipedia reading habits</p>
+            <div id='chart'> </div>
+        </div>
         <script type="text/javascript">
     
-            var charge = -220,
-                linkDistance = 160;
+            var charge = -60,
+                linkDistance = 80;
 
             var w = 960,
-                h = 960,
+                h = 720,
                 fill = d3.scale.category20(),
                 last_node = [w/2,h/2],
                 nodes = [],
@@ -103,28 +106,28 @@
             
             function hit_topic(referrer, topic, type) {
                 var point = [w/2, h/2];
-                if(nodes.length >=1) {
-                    node = nodes[nodes.length-1];
-                    point = [node.x, node.y];
-                } 
-                
-
-                if(!(topic in index)) {
-                    topic_node = {x: point[0], y: point[1], topic: topic};
-                    index[topic] = topic_node;
-                    n = nodes.push(topic_node);
-                } else {
-                    topic_node = index[topic]
+                if(topic != null) {
+                    if(!(topic in index)) {
+                        topic_node = {x: point[0], y: point[1], topic: topic};
+                        index[topic] = topic_node;
+                        n = nodes.push(topic_node);
+                    } else {
+                        topic_node = index[topic]
+                    }
                 }
+                if (referrer != null) {
 
-                if(!(referrer in index)) {
-                    ref_node = {x: point[0], y: point[1], topic: referrer};
-                    index[referrer] = ref_node;
-                    n = nodes.push(ref_node);
-                } else {
-                    ref_node = index[referrer];
+                    if(!(referrer in index)) {
+                        ref_node = {x: point[0], y: point[1], topic: referrer};
+                        index[referrer] = ref_node;
+                        n = nodes.push(ref_node);
+                    } else {
+                        ref_node = index[referrer];
+                    }
                 }
-                links.push({source: ref_node, target: topic_node, 'cl': type});
+                if(topic != null && referrer != null) {
+                    links.push({source: ref_node, target: topic_node, 'cl': type});
+                }
                 restart();
             }
 
