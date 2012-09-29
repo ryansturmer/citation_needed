@@ -11,6 +11,7 @@
             alert("starting install.");
             $.ajax({
                 url:"https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
+                dataType: 'json',
                 success: function(data)
                 {
                     alert('installing.');
