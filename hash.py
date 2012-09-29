@@ -17,5 +17,5 @@ print json_string
 print ""
 
 with open(sys.argv[2], 'w') as fp:
-    fp.write(json_string)
+    fp.write("var xpi_hash = %s;" % json_string)
 
