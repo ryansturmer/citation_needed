@@ -5,11 +5,12 @@
     <script type="application/javascript">
         <!--
         function install (aEvent) {
+            alert("starting install.");
             $.getJSON("https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
                 function(data)
                 {
                     alert('installing.');
-                    var params = {
+                    /*var params = {
                     "Foo": { URL: aEvent.target.href,
                             IconURL: aEvent.target.getAttribute("iconURL"),
                             Hash: data.hash,
@@ -17,6 +18,7 @@
                             }
                     };
                     InstallTrigger.install(params);
+                    */
                 }
             );
             return false;
