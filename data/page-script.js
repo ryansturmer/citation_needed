@@ -1,4 +1,4 @@
-console.log("Executing page-script.js");
+//console.log("Executing page-script.js");
 
 function dispatch_event(event_name, data) {
     var event = document.createEvent('CustomEvent');

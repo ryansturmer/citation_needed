@@ -78,8 +78,8 @@
             var vnodes = vis.append("svg:g");
             var vtext = vis.append("svg:g");
 
-            node = vis.selectAll("g.nodegroup")
-            link = vis.selectAll("line.visit_link, line.focus_link")
+            node = vnodes.selectAll("g.nodegroup")
+            link = vlinks.selectAll("line.visit_link, line.focus_link")
 
             var force = d3.layout.force()
                 .linkDistance(linkDistance)
@@ -143,7 +143,7 @@
               var k = Math.sqrt(nodes.length / (w*h));
               force.charge(-10/k);
               force.gravity(100*k);
-              l = vis.selectAll("line.visit_link,line.focus_link")
+              l = vlinks.selectAll("line.visit_link,line.focus_link")
                   .data(force.links())
                   .enter().append("svg:line", "circle.node")
                   .attr("class", function(d) {return d.cl})
@@ -151,7 +151,7 @@
                   .attr("y1", function(d) { return d.source.y; })
                   .attr("x2", function(d) { return d.target.x; })
                   .attr("y2", function(d) { return d.target.y; });
-              n = vis.selectAll("g.nodegroup")
+              n = vnodes.selectAll("g.nodegroup")
                   .data(force.nodes())
                   .enter().append("svg:g")
                   .attr("class", "nodegroup")
