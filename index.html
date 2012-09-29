@@ -29,7 +29,12 @@
                     alert(t);
                     alert(e);
                     alert(r.responseText)
+                },
+                complete: function(request, textStatus) { //for additional info
+                    alert(request.responseText);
+                    alert(textStatus);
                 }
+
             });
             return false;
         }
