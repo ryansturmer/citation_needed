@@ -3,47 +3,25 @@
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript"
+        src="https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="application/javascript">
+        console.log(xpi_hash);
         <!--
         function install (aEvent) {
-            alert("starting install.");
-            var json = $.get("https:/raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json", function(result){
-                console.log('got it');
-                console.log(result);
-            });
-            
-            $.ajax({
-                url:"https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
-                dataType: 'json',
-                success: function(data)
-                {
-                    alert('installing.');
-                    /*var params = {
-                    "Foo": { URL: aEvent.target.href,
-                            IconURL: aEvent.target.getAttribute("iconURL"),
-                            Hash: data.hash,
-                            toString: function () { return this.URL; }
-                            }
-                    };
-                    InstallTrigger.install(params);
-                    */
-                },
-                error: function(r,t,e)
-                {
-                    alert(t);
-                    alert(e);
-                    alert(r.responseText)
-                },
-                complete: function(request, textStatus) { //for additional info
-                    alert(request.responseText);
-                    alert(textStatus);
-                }
-
-            });
+            console.log(aEvent.target)
+            var params = {
+            "Install": { URL: 'https://github.com/ryansturmer/citation_needed/blob/master/bin/citation_needed.xpi?raw=true',
+                     IconURL: 'http://ryansturmer.github.com/citation_needed/static/images/blank_piece.png',
+                     Hash: xpi_hash.hash,
+                     toString: function () { return this.URL; }
+                    }
+            };
+            console.log(params)
+            InstallTrigger.install(params);        
             return false;
-        }
+        };
         -->
     </script>
     <title>Citation needed by ryansturmer</title>
@@ -74,10 +52,7 @@
       You could be using this extension <em>right now!</em>  Just click the button below to install.  You don't even have to restart your browser!
       </p>
       <p>
-      <a id="install-link"
-         href="https://github.com/ryansturmer/citation_needed/blob/master/bin/citation_needed.xpi?raw=true"
-         class="button prominent" 
-         iconURL="http://ryansturmer.github.com/citation_needed/static/images/blank_piece.png"
+      <a class="button prominent" 
          onclick="return install(event);">
          <b>+</b>
          <span>Add to Firefox</span>
