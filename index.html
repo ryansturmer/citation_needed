@@ -6,8 +6,9 @@
         <!--
         function install (aEvent) {
             alert("starting install.");
-            $.getJSON("https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
-                function(data)
+            $.ajax({
+                url:"https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
+                success: function(data)
                 {
                     alert('installing.');
                     /*var params = {
@@ -19,6 +20,10 @@
                     };
                     InstallTrigger.install(params);
                     */
+                },
+                error: function(data)
+                {
+                    alert(data);
                 }
             );
             return false;
