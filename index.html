@@ -9,6 +9,11 @@
         <!--
         function install (aEvent) {
             alert("starting install.");
+            var json = $.get("https:/raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json", function(result){
+                console.log('got it');
+                console.log(result);
+            });
+            
             $.ajax({
                 url:"https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
                 dataType: 'json',
