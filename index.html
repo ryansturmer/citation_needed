@@ -8,14 +8,14 @@
             $.getJSON("https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
                 function(data)
                 {
+                    alert('installing.');
                     var params = {
                     "Foo": { URL: aEvent.target.href,
                             IconURL: aEvent.target.getAttribute("iconURL"),
                             Hash: data.hash,
                             toString: function () { return this.URL; }
                             }
-                    }
-                    alert('installing.')
+                    };
                     InstallTrigger.install(params);
                 }
             );
