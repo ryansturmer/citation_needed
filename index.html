@@ -1,23 +1,28 @@
 <!doctype html>
 <html>
     <head>
-        <script type="application/javascript">
-<!--
-function install (aEvent)
-{
-  var params = {
-    "Foo": { URL: aEvent.target.href,
-             IconURL: aEvent.target.getAttribute("iconURL"),
-             //Hash: aEvent.target.getAttribute("hash"),
-             toString: function () { return this.URL; }
-    }
-  };
-  InstallTrigger.install(params);
-
-  return false;
-}
--->
-</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="application/javascript">
+        <!--
+        function install (aEvent) {
+            $.getJSON("https://raw.github.com/ryansturmer/citation_needed/master/bin/citation_needed.json",
+                function(data)
+                {
+                    var params = {
+                    "Foo": { URL: aEvent.target.href,
+                            IconURL: aEvent.target.getAttribute("iconURL"),
+                            Hash: data.hash,
+                            toString: function () { return this.URL; }
+                            }
+                    }
+                    
+                InstallTrigger.install(params);
+                return false;
+                }
+            );
+        }
+        -->
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Citation needed by ryansturmer</title>
@@ -48,7 +53,8 @@ function install (aEvent)
       You could be using this extension <em>right now!</em>  Just click the button below to install.  You don't even have to restart your browser!
       </p>
       <p>
-      <a class="button prominent" 
+      <a id="install-link"
+         class="button prominent" 
          iconURL="http://ryansturmer.github.com/citation_needed/static/images/blank_piece.png"
          hash="sha1:28857e60d043447c5f4550853f2d40770b326a13"
          onclick="return install(event);">
