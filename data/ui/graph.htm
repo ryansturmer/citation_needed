@@ -151,8 +151,8 @@
                   .data(force.nodes())
                   .enter().append("svg:g")
                   .attr("class", "nodegroup")
-                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" });
-                  
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
+                  .call(force.drag); 
               n.append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", 0)
