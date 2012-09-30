@@ -1,9 +1,9 @@
 {
     "name": "citation_needed", 
     "license": "MPL 2.0", 
-    "author": "", 
+    "author": "Ryan Sturmer", 
     "version": "0.1", 
-    "fullName": "citation_needed", 
+    "fullName": "[Citation Needed]", 
     "id": "jid1-n7zXsWPFciW2bg", 
     "description": "Visualizes your wikipedia reading habits.",
     "dependencies": ["vold-utils", "menuitems", "addon-kit", "api-utils"]
