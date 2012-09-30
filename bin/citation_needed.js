@@ -1,1 +1,1 @@
-var xpi_hash = {"hash": "sha1:d44a95e6105f490d808f38f742249f750b30a978"};
+var xpi_hash = {"hash": "sha1:41ce941457830597a55949f25065b0c380fa5ed7"};
