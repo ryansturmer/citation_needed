@@ -70,8 +70,22 @@
 
 <h3>Installation and Use</h3>
 
-<p>Just click the button on the left to install the extension.  Mozilla browsers only!</p>
+<p>Just click the button on the left to install the extension.  Mozilla browsers only!  To use the extension, simply open the Citation Needed view from the 'Tools' menu.  Browse Wikipedia, and a graph will be rendered there.  You can even tear the graph tab out and view it in a separate window if you like.</p>
 
+
+<h3>Developers</h3>
+
+<p>Building the extension requires <a href="http://www.python.org/">Python</a> and the <a href="https://addons.mozilla.org/en-US/developers/builder">Mozilla Add-on SDK.</a> Citation Needed requires several SDK extensions, so if you've already got Python installed, your best bet is to use the <code>get_sdk.py</code> script included in the source:</p>
+<pre><code>python get_sdk.py</code></pre>
+<p>Will fetch a current Mozilla SDK, all the extensions required to build Citation Needed, and install them in a folder called <code>sdk</code>.  To get started with the extension <code>cd</code> to the <code>sdk/addon-sdk-1.x</code> directory, and 
+<pre><code>source bin/activate</code></pre> 
+<p>or if you're on Windows run:</p>
+<pre><code>bin/activate.bat</code></pre>
+<p>You're all set!  To run a test installation in Firefox, simply use the <code>cfx</code> tool:</p>
+<pre><code>cfx run</code></pre>
+<p>To build the extension, use GNU make:</p>
+<pre><code>make xpi</code></pre>
+<p>This not only builds the extension, but produces the SHA1 hashfile needed for installation from this site.  Don't commit the extension without committing the hashfile that goes with it!</p>
 <h3>Support or Contact</h3>
 
 <p>Having trouble? There isn't really any documentation, but if you like, you can contact me <a href="mailto:ryansturmer@gmail.com">directly</a></p>
