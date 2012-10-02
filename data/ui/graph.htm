@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="UTF-8" >
         <title>Citation Needed</title>
         <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.min.js"></script>
@@ -165,12 +166,12 @@
                   .attr("x", 8)
                   .attr("y", ".31em")
                   .attr("class", "shadow")
-                  .text(function(d) { return d.topic });
+                  .text(function(d) { return d.topic; });
 
               text.append("svg:text")
                   .attr("x", 8)
                   .attr("y", ".31em")
-                  .text(function(d) { return d.topic });
+                  .text(function(d) { return d.topic; });
 
               node = vis.selectAll("g.nodegroup");
               link = vis.selectAll("line.visit_link, line.focus_link");
