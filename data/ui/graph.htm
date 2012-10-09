@@ -34,24 +34,34 @@
                 stroke: #aaa;
                 stroke-width: 3; 
           }
+            
 
-          text {
-            font: 10px sans-serif;
-            pointer-events: none;
+          .nodelabel {
+              font: 10px sans-serif;
           }
 
-          text.shadow {
+          .nodelabel-text {
+              fill: #000000;
+          }
+          .nodelabel-text:hover {
+            fill: #0000ff;
+          }
+
+        .nodelabel-shadow {
             stroke: #fff;
             stroke-width: 3px;
             stroke-opacity: .8;
-          }
+
+        }
         </style>
     </head>
     <body>
         <div style="text-align: center">
             <h1>Citation Needed</h1>
             <p>Observe the space below to visualize your wikipedia reading habits</p>
-            <div id='chart'> </div>
+            <div id='chart'>
+                <svg id='chart-svg' xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+            </div>
         </div>
         <script type="text/javascript">
     
@@ -67,7 +77,7 @@
                 index = {};
             
 
-            var vis = d3.select('#chart').append("svg:svg")
+            var vis = d3.select('#chart-svg')
                 .attr("width", w)
                 .attr("height", h);
 
@@ -94,7 +104,7 @@
                 var point = [w/2 + 10-Math.random()*5, h/2 + 10-Math.random()*5];
                 if(topic != null) {
                     if(!(topic in index)) {
-                        topic_node = {x: point[0], y: point[1], topic: topic};
+                        topic_node = {x: point[0], y: point[1], topic: topic, url: entry.dst_url};
                         index[topic] = topic_node;
                         n = nodes.push(topic_node);
                     } else {
@@ -142,16 +152,21 @@
                   .attr("r", 5);
 
               var text = n.append("svg:g")
-                  
-              text.append("svg:text")
+                  .attr("class", "nodelabel");
+              var a = text.append("svg:a")
+                  .attr("xlink:href", function(d) { return d.url; } )
+                  .attr("xlink:show", "new");
+
+              a.append("svg:text")
                   .attr("x", 8)
                   .attr("y", ".31em")
-                  .attr("class", "shadow")
+                  .attr("class", "nodelabel-shadow")
                   .text(function(d) { return d.topic; });
 
-              text.append("svg:text")
+              a.append("svg:text")
                   .attr("x", 8)
                   .attr("y", ".31em")
+                  .attr("class", "nodelabel-text")
                   .text(function(d) { return d.topic; });
 
               node = vis.selectAll("g.nodegroup");
