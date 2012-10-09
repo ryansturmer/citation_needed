@@ -1,2 +1,6 @@
 # Ignore the sdk dir, which is where get_sdk.py puts its downloads and sdk installation
 sdk
+.*
+*~
+*.swp
+
