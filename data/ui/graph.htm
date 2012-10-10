@@ -51,7 +51,11 @@
             stroke: #fff;
             stroke-width: 3px;
             stroke-opacity: .8;
+        }
 
+        .start-ring {
+            fill: #fff;
+            stroke: #000;
         }
         </style>
     </head>
@@ -100,11 +104,12 @@
                 referrer = entry.src_topic;
                 topic = entry.dst_topic;
                 type = entry.type
-
+                console.log(entry);
+                console.log(entry.start);
                 var point = [w/2 + 10-Math.random()*5, h/2 + 10-Math.random()*5];
                 if(topic != null) {
                     if(!(topic in index)) {
-                        topic_node = {x: point[0], y: point[1], topic: topic, url: entry.dst_url};
+                        topic_node = {x: point[0], y: point[1], topic: topic, url: entry.dst_url, start:entry.start};
                         index[topic] = topic_node;
                         n = nodes.push(topic_node);
                     } else {
@@ -144,13 +149,24 @@
                   .enter().append("svg:g")
                   .attr("class", "nodegroup")
                   .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
-                  .call(force.drag); 
+                  .call(force.drag);
+              console.log(nodes);
+
+              // Start ring
+              n.filter(function(d) { return d.start }).append("svg:circle")
+                  .attr("class", "start-ring")
+                  .attr("cx", 0)
+                  .attr("cy", 0)
+                  .attr("r", 8);
+
+              // Node circle
               n.append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", 0)
                   .attr("cy", 0)
                   .attr("r", 5);
-
+              
+              // Label
               var text = n.append("svg:g")
                   .attr("class", "nodelabel");
               var a = text.append("svg:a")
@@ -158,13 +174,13 @@
                   .attr("xlink:show", "new");
 
               a.append("svg:text")
-                  .attr("x", 8)
+                  .attr("x", function(d) { return d.start ? 10 : 8; })  // Offset text slightly if there's a start ring
                   .attr("y", ".31em")
                   .attr("class", "nodelabel-shadow")
                   .text(function(d) { return d.topic; });
 
               a.append("svg:text")
-                  .attr("x", 8)
+                  .attr("x", function(d) { return d.start ? 10 : 8; })
                   .attr("y", ".31em")
                   .attr("class", "nodelabel-text")
                   .text(function(d) { return d.topic; });
