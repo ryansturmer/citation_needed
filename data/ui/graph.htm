@@ -104,8 +104,6 @@
                 referrer = entry.src_topic;
                 topic = entry.dst_topic;
                 type = entry.type
-                console.log(entry);
-                console.log(entry.start);
                 var point = [w/2 + 10-Math.random()*5, h/2 + 10-Math.random()*5];
                 if(topic != null) {
                     if(!(topic in index)) {
@@ -150,7 +148,6 @@
                   .attr("class", "nodegroup")
                   .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
                   .call(force.drag);
-              console.log(nodes);
 
               // Start ring
               n.filter(function(d) { return d.start }).append("svg:circle")
@@ -163,7 +160,7 @@
               n.append("svg:circle")
                   .attr("class", "node")
                   .attr("cx", 0)
-                  .attr("cy", 0)
+                  .attr("cy", 0false)
                   .attr("r", 5);
               
               // Label
