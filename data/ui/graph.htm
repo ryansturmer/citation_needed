@@ -5,31 +5,17 @@
         <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.min.js"></script>
         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link rel="icon" type="image/png" href="favicon.png"/>
         <style type="text/css">
-            html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                font-family: monospace, Courier;
-            }
-            table {
-                border: 1px solid black;
-                border-collapse: collapse;
-                width: 90%;
-            }
-
-            tr, td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
             rect {
                 fill: #fff;
                 stroke: #aaa;
             }
-
+            svg {
+                border: 1px solid #999;
+            }
             .node {
               fill: #000;
             }
@@ -71,18 +57,30 @@
     </head>
     <body>
         <div style="text-align: center">
-            <h1>Citation Needed</h1>
-            <p>Observe the space below to visualize your wikipedia reading habits</p>
-            <div id='chart'>
-                <svg id='chart-svg' xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
-            </div>
-            
-            <div id='log'>
-                <table id='log-table' style="border:1px solid black;">
+            <div class="container-fluid">
+                <div class='row-fluid' id='header'>
+                    <h1>Citation Needed</h1>
+                    <p>Observe the space below to visualize your wikipedia reading habits</p>
+                </div>    
+                <div class='row-fluid'>
+                    <div class='span12'  id='chart' style="padding-bottom: 20px">
+                        <svg id='chart-svg' xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" ></svg>
+                    </div>
+                </div>
 
-                </table>
+                <div class='row-fluid' id='footer'>
+                    <div id='log' class='span12'>
+                        <table id='log-table' class='table table-bordered table-hover'>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Source</th>
+                                <th>Dest</th>
+                                <th>Type</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
         </div>
         <script type="text/javascript">
             var entries = [];
@@ -90,9 +88,7 @@
             var charge = -60,
                 linkDistance = 80;
 
-            var w = 960,
-                h = 720,
-                fill = d3.scale.category20(),
+            var fill = d3.scale.category20(),
                 last_node = [w/2,h/2],
                 nodes = [],
                 links = [],
@@ -100,15 +96,19 @@
             
 
             var vis = d3.select('#chart-svg')
-                .attr("width", w)
-                .attr("height", h);
+                //.attr("width", w)
+                //.attr("height", h);
+                
+            // Initial width and height    
+            var w = $("#chart").width();
+            var h = $("#chart").height();
 
             var vlinks = vis.append("svg:g");
             var vnodes = vis.append("svg:g");
             var vtext = vis.append("svg:g");
 
-            node = vnodes.selectAll("g.nodegroup")
-            link = vlinks.selectAll("line.load_link, line.focus_link")
+            node = vnodes.selectAll("g.nodegroup");
+            link = vlinks.selectAll("line.load_link, line.focus_link");
 
             var force = d3.layout.force()
                 .linkDistance(linkDistance)
@@ -119,6 +119,8 @@
                 .on("tick", tick);
 
             function hit_topic(entry) {
+                w = $("#chart").width();
+                h = $("#chart").height();
                 entries.push(entry);
                 referrer = entry.src_topic;
                 topic = entry.dst_topic;
@@ -151,25 +153,45 @@
             }
 
             function update_table() {
-                console.log("Attempting to update table...");
                 table = d3.select("#log-table");
-                console.log(table);
                 row = table.selectAll("tr")
                     .data(entries)
                     .enter().append("tr");
 
                 row.append("td")
-                    .text(function(d) { d.timestamp });
-                row.append("td")
+                    .text(function(d) { return d.timestamp || "no timestamp??"; });
+
+                
+                row.filter(function(d) { return d.src_topic; })
+                    .append("td")
                     .append("a")
                         .attr("href", function(d) { return d.src_url; })
                         .text(function(d) { return d.src_topic; });
+                row.filter(function(d) { return !d.src_topic; })
+                    .append("td")
+                    .text("Outside Wikipedia");
+ 
+                row.filter(function(d) { return d.dst_topic; })
+                    .append("td")
+                    .append("a")
+                        .attr("href", function(d) { return d.dst_url; })
+                        .text(function(d) { return d.dst_topic; });
+                row.filter(function(d) { return !d.dst_topic; })
+                    .append("td")
+                    .text("Outside Wikipedia");
+
+
+                row.append("td")
+                    .text(function(d) { return d.type || "no type"; });
             }
 
             function restart() {
+              w = $("#chart").width();
+              h = $("#chart").height();
               var k = Math.sqrt(nodes.length / (w*h));
               force.charge(-10/k);
               force.gravity(100*k);
+              force.size([w,h]);
               l = vlinks.selectAll("line.load_link,line.focus_link")
                   .data(force.links())
                   .enter().append("svg:line", "circle.node")
@@ -223,6 +245,14 @@
               force.start();
             }
 
+            function resize_handler(event) {
+                height = window.innerHeight - 50 -$("#header").height();
+                $("#chart").height(height);
+                restart();
+            };
+            
+            window.onresize = resize_handler;
+            window.onload = resize_handler;
             function tick() {
                 node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
