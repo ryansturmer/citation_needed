@@ -5,6 +5,7 @@
         <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.geom.min.js"></script>
         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.min.js"></script>
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link rel="icon" type="image/png" href="favicon.png"/>
         <style type="text/css">
             html, body {
@@ -14,7 +15,16 @@
                 padding: 0;
                 font-family: monospace, Courier;
             }
+            table {
+                border: 1px solid black;
+                border-collapse: collapse;
+                width: 90%;
+            }
 
+            tr, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
             rect {
                 fill: #fff;
                 stroke: #aaa;
@@ -66,9 +76,17 @@
             <div id='chart'>
                 <svg id='chart-svg' xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
             </div>
+            
+            <div id='log'>
+                <table id='log-table' style="border:1px solid black;">
+
+                </table>
+            </div>
+            
         </div>
         <script type="text/javascript">
-    
+            var entries = [];
+
             var charge = -60,
                 linkDistance = 80;
 
@@ -101,6 +119,7 @@
                 .on("tick", tick);
 
             function hit_topic(entry) {
+                entries.push(entry);
                 referrer = entry.src_topic;
                 topic = entry.dst_topic;
                 type = entry.type
@@ -128,6 +147,23 @@
                     links.push({source: ref_node, target: topic_node, 'cl': type + '_link'});
                 }
                 restart();
+                update_table();
+            }
+
+            function update_table() {
+                console.log("Attempting to update table...");
+                table = d3.select("#log-table");
+                console.log(table);
+                row = table.selectAll("tr")
+                    .data(entries)
+                    .enter().append("tr");
+
+                row.append("td")
+                    .text(function(d) { d.timestamp });
+                row.append("td")
+                    .append("a")
+                        .attr("href", function(d) { return d.src_url; })
+                        .text(function(d) { return d.src_topic; });
             }
 
             function restart() {
