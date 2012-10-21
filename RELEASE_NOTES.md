@@ -4,3 +4,6 @@
 1.0.10
  * "Save as SVG" added
  * Text description
+1.0.11
+ * Slight improvements to appearance
+ * Performance boost, all javascripts local now (no more dependencies on mbostock or google's jquery
