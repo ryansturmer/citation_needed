@@ -9,3 +9,7 @@
 1.0.11
  * Slight improvements to appearance
  * Performance boost, all javascripts local now (no more dependencies on mbostock or google's jquery
+
+1.0.12
+ * Changed tagline
+ * Navigational elements removed from UI
