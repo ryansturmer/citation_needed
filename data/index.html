@@ -31,7 +31,7 @@
                 <div>
                     <h1>Citation Needed</h1>
                     <p>
-                    <em>“It is what you read when you don't have to that determines what you will be when you can't help it.”</em>
+                    <em>It is what you read when you don't have to that determines what you will be when you can't help it.</em>
                     </p>
                 </div>
             </div>    
@@ -111,15 +111,25 @@
             </div>
         </div>
         <script type="text/javascript">
-        function save_svg() {
-            var svg = document.getElementById('chart-svg')
-            var serializer = new XMLSerializer();
-            var str = serializer.serializeToString(svg);
-            var b64 = window.btoa(str);
-            var data = "data:image/svg+xml;base64,\n" + b64;
-            window.open(data, name='_blank');
-            //button.attr({"href-lang":"image/svg+xml", "href":"data:image/svg+xml;base64,\n"+b64, "title":"file.svg"}); 
-        }
+            function save_svg() {
+                var svg = document.getElementById('chart-svg')
+                var serializer = new XMLSerializer();
+                var str = serializer.serializeToString(svg);
+                var b64 = window.btoa(str);
+                var data = "data:image/svg+xml;base64,\n" + b64;
+                window.open(data, name='_blank');
+                //button.attr({"href-lang":"image/svg+xml", "href":"data:image/svg+xml;base64,\n"+b64, "title":"file.svg"}); 
+            }
+
+            /*
+             * Dispatch event to the page script that's loaded for this UI
+             */
+            function dispatch_event(event_name, data) {
+                var event = document.createEvent('CustomEvent');
+                event.initCustomEvent(event_name, true, true, data);
+                document.documentElement.dispatchEvent(event);
+            }
+
             var entries = [];
 
             var charge = -60,
@@ -315,6 +325,7 @@
                 links.length=0;
                 restart();
                 update_table();
+                dispatch_event('clear');
             }
             $('#clear-button').click(clear_graph);
             $('#svg-button').click(function() { save_svg()});
