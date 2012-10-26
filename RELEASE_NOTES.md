@@ -13,3 +13,7 @@
 1.0.12
  * Changed tagline
  * Navigational elements removed from UI
+
+1.0.13
+ * Retention of data across browser sessions
+ * Exporting of data to JSON format
