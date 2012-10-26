@@ -336,6 +336,7 @@
                 restart();
                 update_table();
                 dispatch_event('clear');
+                saveData();
             }
             $('#clear-button').click(clear_graph);
             $('#svg-button').click(function() { save_svg()});
