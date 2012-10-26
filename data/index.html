@@ -85,6 +85,9 @@
                     <a class='btn btn-block' id='svg-button'>
                         <i class='icon-camera'></i>&nbsp;Save SVG...
                     </a>
+                    <a class='btn btn-block' id='json-button'>
+                        <i class='icon-list-alt'></i>&nbsp;Save JSON...
+                    </a>
                     <p>
                     <h6>About</h6>
                         <small>
@@ -119,6 +122,13 @@
                 var data = "data:image/svg+xml;base64,\n" + b64;
                 window.open(data, name='_blank');
                 //button.attr({"href-lang":"image/svg+xml", "href":"data:image/svg+xml;base64,\n"+b64, "title":"file.svg"}); 
+            }
+            
+            function save_json() {
+                var str = JSON.stringify(entries);
+                var b64 = btoa(str);
+                var data = "data:application/json;base64,\n" + b64;
+                window.open(data, name='_blank');
             }
 
             /*
@@ -329,6 +339,7 @@
             }
             $('#clear-button').click(clear_graph);
             $('#svg-button').click(function() { save_svg()});
+            $('#json-button').click(function() { save_json()});
             
             document.documentElement.addEventListener('page-entry', function(event) {hit_topic(event.detail);});
             restart();
