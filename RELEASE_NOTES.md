@@ -17,3 +17,7 @@
 1.0.13
  * Retention of data across browser sessions
  * Exporting of data to JSON format
+
+1.0.14
+ * Fixed graph persistence bug
+ * Added footer with link to citation needed site
